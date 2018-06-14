@@ -144,7 +144,8 @@ object Intersects {
               case EmptyBounds => Nil
             }
           })
-          .reduce({ (x,y) => x ++ y })
+          .reduceOption({ (x,y) => x ++ y })
+          .getOrElse(Nil)
       }
     }
 
@@ -202,7 +203,8 @@ object Intersects {
               case EmptyBounds => Nil
             }
           })
-          .reduce({ (x,y) => x ++ y })
+          .reduceOption({ (x,y) => x ++ y })
+          .getOrElse(Nil)
       }
     }
 

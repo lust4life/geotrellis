@@ -134,6 +134,15 @@ class LayerQuerySpec extends FunSpec
       (expected diff actual) should be ('empty)
     }
 
+    it("should find nothing that intersect with an empty MultiPolygon") {
+      val polyCRS = CRS.fromEpsgCode(2023)
+      val polygon = MultiPolygon().reproject(md.crs, polyCRS)
+      val query = new LayerQuery[SpatialKey, TileLayerMetadata[SpatialKey]].where(Intersects(polygon -> polyCRS))
+      val actual = query(md).flatMap(spatialKeyBoundsKeys)
+      val expected = naiveKeys(polygon)
+      (expected diff actual) should be ('empty)
+    }
+
     it("should find all keys that intersect appreciably with an L-shaped polygon that is in a differet projection") {
       val polyCRS = CRS.fromEpsgCode(2023)
       val polygon = MultiPolygon(List(horizontal, vertical)).reproject(md.crs, polyCRS)
